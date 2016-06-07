@@ -14,8 +14,9 @@ This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block<
 
 
 #### Usages
-Insert the below line in your HTML file to download the plugin:
+In your HTML file, load the plugin after loading D3. The result may look like:
 ```html
+<script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://rawgit.com/Kcnarf/d3.layout.swarmX/master/swarm-x.js"></script>
 ```
 
