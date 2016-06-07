@@ -1,7 +1,9 @@
 # d3.layout.swarmX
-D3 plugin which computes a 'swarmX' arrangement
+D3 plugin which computes a _swarmX_ arrangement
 
 #### Introduction
+A  _swarmX_ arrangement is close to a _beeswarm arrangeement_.
+
 Beeswarm is a one-dimensional scatter plot with closely-packed, non-overlapping points. Beeswarm plot usually uses force layout, but the force layout simulation naturally tries to reach its equilibrium by rearranging data points in the 2D space, which can be disruptive to the ordering of the data.
 
 A _swarmX_ arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
@@ -12,6 +14,12 @@ This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block<
 
 
 #### Usages
+Insert the below line in your HTML file to download the plugin:
+```html
+<script src="https://rawgit.com/Kcnarf/d3.layout.swarmX/master/swarm-x.js"></script>
+```
+
+Then, in your javascript:
 ```javascript
 var swarm = d3.layout.swarmX()
   .data(data)                                 // set the data to arrange
