@@ -1,4 +1,4 @@
-# d3.layout.swarmX
+# d3.layout.beeswarm
 This d3 plugin produces a _beeswarm_ arrangement, thanks to a dedicated algorithm and without the use a the d3.force layout.
 
 #### Context
