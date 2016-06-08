@@ -1,57 +1,57 @@
-d3.layout.swarmX = function () {		
-	/////// Inputs ///////
+d3.layout.beeswarm = function () {		
+  /////// Inputs ///////
   var data = [];							// original data to arrange
   var	radius = 4;							// default radius
   var	x =											// accessor to the x value
           function (datum) {
             return datum.x;
           };
-  
+
   /////// Result ///////
   var arrangement; 						// result, array of {datum: , x: , y: }
-  
+
   /////// Internals ///////
   var minDistanceBetweenCircles;
   var minSquareDistanceBetweenCircles;
   var xBasedDataManager;			// for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
   var xBasedColliderManager;	// for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
   var yBasedColliderManager;	// for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
-  
-  
+
+
   //--> for metrics purpose
   var totalPossibleColliders, maxPossibleColliders,
       totalTestedPlacements,
       visitedColliderCount, totalVisitedColliders, maxVisitedColliders;
   //<-- for metrics purpose
-  
-  function _swarmX () {}; 		// constructor ???
-  
+
+  function _beeswarm () {}; 		// constructor ???
+
   ///////////////////////
   ///////// API /////////
   ///////////////////////
-  
-  _swarmX.data = function(_) {
+
+  _beeswarm.data = function(_) {
     if (!arguments.length) return data;
-    
     data = _;
-    return _swarmX;
+    
+    return _beeswarm;
   };
 
-  _swarmX.radius = function (_) {
+  _beeswarm.radius = function (_) {
     if (!arguments.length) return radius;
-    
     radius = _;
-    return _swarmX;
+    
+    return _beeswarm;
   };
 
-  _swarmX.x = function (_) {
+  _beeswarm.x = function (_) {
     if (!arguments.length) return x;
-    
     x = _;
-    return _swarmX;
+    
+    return _beeswarm;
   };
-  
-  _swarmX.arrange = function() {
+
+  _beeswarm.arrange = function() {
     initArrangement();
     arrangement.forEach(function (d) {
       var bestYPosition = -Infinity,
@@ -96,8 +96,8 @@ d3.layout.swarmX = function () {
     });
     return arrangement;
   };
-  
-  _swarmX.metrics = function () {
+
+  _beeswarm.metrics = function () {
     return {
       totalPossibleColliders: totalPossibleColliders,
       maxPossibleColliders: maxPossibleColliders,
@@ -107,11 +107,11 @@ d3.layout.swarmX = function () {
       maxVisitedColliders: maxVisitedColliders
     };
   };
-  
+
   ///////////////////////
   /////// Private ///////
   ///////////////////////
-  
+
   function initArrangement () {
     arrangement = data.map(function (d,i) {
       return {
@@ -121,7 +121,7 @@ d3.layout.swarmX = function () {
         y: -Infinity
       }; 
     });
-    
+
     minDistanceBetweenCircles = 2*radius;
     minSquareDistanceBetweenCircles = Math.pow(minDistanceBetweenCircles, 2);
     xBasedDataManager = new SortedDirectAccessDoublyLinkedList()
@@ -131,7 +131,7 @@ d3.layout.swarmX = function () {
       .valueAccessor(function(d){return d.x;});
     yBasedColliderManager = new SortedDirectAccessDoublyLinkedList()
       .valueAccessor(function(d){return d.y;});
-    
+
 
     //-->for metrics purpose
     totalPossibleColliders = maxPossibleColliders = 0;
@@ -139,8 +139,8 @@ d3.layout.swarmX = function () {
     visitedColliderCount = totalVisitedColliders = maxVisitedColliders =0;
     //<--for metrics purpose
   };
-	
-  
+
+
   function findNearestBelowPossibleCollider(dln, visitedDln, xBasedDataManager) {
     if (visitedDln === null) { // special case: min reached
       return null;
@@ -293,12 +293,12 @@ d3.layout.swarmX = function () {
       return collidesWithAbove(datum, visitedDln.above, yBasedColliderManager, visitCount++);
     }
   };
-  
+
   ///////////////////////
   //////// Data /////////
   ////// Strucutre //////
   ///////////////////////
-  
+
   // each data MUST have a 'value' property (for sorting)
   // each data MUST have a 'id' property (for direct-access)
 
@@ -421,5 +421,5 @@ d3.layout.swarmX = function () {
     return this;
   }
 
-  return _swarmX;
+  return _beeswarm;
 }
