@@ -12,9 +12,9 @@ Some beeswarm-like plot implementation uses force layout, but the force layout s
 This _beeswarm_ plugin uses a dedicated one pass algorithm. The final arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
 
 
-#### Example
-This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block</a> uses this __d3.layout.beeswarm__ plugin.
-
+#### Examples
+* This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block</a> uses this __d3.layout.beeswarm__ plugin.
+* This <a href='http://poly-graph.co/vocabulary.html'>post</a> uses a beeswarm plot (but not this plugin).
 
 #### Usages
 In your HTML file, load the plugin after loading D3. The result may look like:
@@ -36,6 +36,9 @@ var swarm = d3.layout.beeswarm()
                                               //   where datum refers to an element of data
                                               //   each element of data remains unchanged
 ```
+
+#### Reference
+* R package: <a href=http://www.cbs.dtu.dk/~eklund/beeswarm/'>http://www.cbs.dtu.dk/~eklund/beeswarm/</a>
 
 #### Check list
 Even if this plugin works, this is an on-going work:
