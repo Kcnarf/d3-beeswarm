@@ -1,16 +1,19 @@
 # d3.layout.swarmX
-D3 plugin which computes a _swarmX_ arrangement
+This d3 plugin produces a _beeswarm_ arrangement, thanks to a dedicated algorithm and without the use a the d3.force layout.
 
-#### Introduction
-A  _swarmX_ arrangement is close to a _beeswarm arrangeement_.
+#### Context
+Beeswarm is a one-dimensional scatter plot with closely-packed, non-overlapping points. The beeswarm plot is a useful technique when we wish to see not only the measured values of interest for each data point, but also the distribution of these values
 
-Beeswarm is a one-dimensional scatter plot with closely-packed, non-overlapping points. Beeswarm plot usually uses force layout, but the force layout simulation naturally tries to reach its equilibrium by rearranging data points in the 2D space, which can be disruptive to the ordering of the data.
+Some beeswarm-like plot implementation uses force layout, but the force layout simulation has some drawbacks:
 
-A _swarmX_ arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
+* it naturally tries to reach its equilibrium by rearranging data points in the 2D space, which can be disruptive to the ordering of the data
+* it requires several iterations to reach its equilibrium
+
+This _beeswarm_ plugin uses a dedicated one pass algorithm. The final arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
 
 
 #### Example
-This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block</a> uses this __d3.layout.swarmX__ plugin.
+This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block</a> uses this __d3.layout.beeswarm__ plugin.
 
 
 #### Usages
@@ -22,7 +25,7 @@ In your HTML file, load the plugin after loading D3. The result may look like:
 
 Then, in your javascript:
 ```javascript
-var swarm = d3.layout.swarmX()
+var swarm = d3.layout.beeswarm()
   .data(data)                                 // set the data to arrange
   .radius(4)                                  // set the radius for overlapping detection
   .x(function(d){                             // set the 'x' value accessor
@@ -47,3 +50,4 @@ Even if this plugin works, this is an on-going work:
 * [todo, nice\_to\_have] option to arrange data above/below/arround x-axis
 * [todo, nice\_to\_have] add a maximum size, and provide strategies if exceeded (automatic stretching with overlapping like d3.layout.force, automatic radius reduction, omit exceeding data, ...)
 * [todo, nice\_to\_have] detect if data is already sorted, for computation optimization (x-based possible colliders are easier to detect, cf. <a href='http://bl.ocks.org/Kcnarf/921b2f038327dd0ca55213e4ce8bcdb1'>this block</a>)
+* [todo, nice\_to\_have] consider algorithm presented in <a href='http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html'>http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html</a>, which sees to have a lower complexity
