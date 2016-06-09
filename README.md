@@ -50,7 +50,8 @@ Even if this plugin works, this is an on-going work:
   * unit tests (internal data strucutre, API),
   * minify,
   * ...
-* [todo, nice\_to\_have] option to arrange data above/below/arround x-axis
+* [todo, nice\_to\_have] option to arrange along x-axis or y-axis
+* [todo, nice\_to\_have] option to arrange data above/below/arround axis
 * [todo, nice\_to\_have] add a maximum size, and provide strategies if exceeded (automatic stretching with overlapping like d3.layout.force, automatic radius reduction, omit exceeding data, ...)
 * [todo, nice\_to\_have] detect if data is already sorted, for computation optimization (x-based possible colliders are easier to detect, cf. <a href='http://bl.ocks.org/Kcnarf/921b2f038327dd0ca55213e4ce8bcdb1'>this block</a>)
-* [todo, nice\_to\_have] consider algorithm presented in <a href='http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html'>http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html</a>, which sees to have a lower complexity
+* [todo, nice\_to\_have] consider algorithm presented in <a href='http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html'>http://yaikhom.com/2013/04/05/implementing-a-beeswarm-plot.html</a>, which seems to have a lower complexity
