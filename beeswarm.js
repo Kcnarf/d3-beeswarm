@@ -1,8 +1,8 @@
 d3.layout.beeswarm = function () {		
   /////// Inputs ///////
   var data = [];              // original data to arrange
-  var	radius = 4;             // default radius
-  var	x =                     // accessor to the x value
+  var radius = 4;             // default radius
+  var x =                     // accessor to the x value
           function (datum) {
             return datum.x;
           };
