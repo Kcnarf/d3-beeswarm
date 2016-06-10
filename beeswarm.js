@@ -66,7 +66,7 @@ d3.layout.beeswarm = function () {
           relativeYPos = yPosRelativeToXbpc(xbpc, d);
           placeBelow(d, xbpc, relativeYPos);
           if (isBetterPlacement(d, bestYPosition) &&
-              !collidesWithOther(d, yBasedColliderManager.dln(xbpc), yBasedColliderManager)) {
+              !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
             bestYPosition = d.y;
           }
           //-->for metrics purpose
@@ -78,7 +78,7 @@ d3.layout.beeswarm = function () {
           //<--for metrics purpose
           placeAbove(d, xbpc, relativeYPos);
           if (isBetterPlacement(d, bestYPosition) &&
-              !collidesWithOther(d, yBasedColliderManager.dln(xbpc), yBasedColliderManager)) {
+              !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
             bestYPosition = d.y;
           }
           //-->for metrics purpose
@@ -140,7 +140,7 @@ d3.layout.beeswarm = function () {
     //<--for metrics purpose
   };
 
-	function findNearestPossibleCollider(dln, visitedDln, direction, xBasedDataManager) {
+	function findNearestPossibleCollider(dln, visitedDln, direction) {
     if (visitedDln === null) { // special case: max reached
       return null;
     } else if ((direction==="below")
@@ -154,11 +154,11 @@ d3.layout.beeswarm = function () {
         return(visitedDln.datum);
       }
       // continue finding
-      return findNearestPossibleCollider(dln, visitedDln[direction], direction, xBasedDataManager);
+      return findNearestPossibleCollider(dln, visitedDln[direction], direction);
     }
   };
 
-  function visitToGatherXBasedPossibleColliders(dln, visitedDln, direction, xBasedColliderManager, xBasedPossibleColliders) {
+  function visitToGatherXBasedPossibleColliders(dln, visitedDln, direction, xBasedPossibleColliders) {
     if (visitedDln === null) { // special case: extreme reached
       return;
     } else if ((direction==="below")
@@ -171,7 +171,7 @@ d3.layout.beeswarm = function () {
       // visitedDln is already arranged, and hence is a possible x-based collider
       xBasedPossibleColliders.push(visitedDln.datum);
       // continue gathering
-      visitToGatherXBasedPossibleColliders(dln, visitedDln[direction], direction, xBasedColliderManager, xBasedPossibleColliders);
+      visitToGatherXBasedPossibleColliders(dln, visitedDln[direction], direction, xBasedPossibleColliders);
     }
   };
 
@@ -179,20 +179,20 @@ d3.layout.beeswarm = function () {
     var xBasedPossibleColliders = [];
     var dln = xBasedDataManager.dln(datum);
     //use xBasedDataManager to retrieve nearest already arranged data
-    var nearestXBelowAlreadyArrangedData = findNearestPossibleCollider(dln, dln.below, "below", xBasedDataManager);
-    var nearestXAboveAlreadyArrangedData = findNearestPossibleCollider(dln, dln.above, "above", xBasedDataManager);
+    var nearestXBelowAlreadyArrangedData = findNearestPossibleCollider(dln, dln.below, "below");
+    var nearestXAboveAlreadyArrangedData = findNearestPossibleCollider(dln, dln.above, "above");
 
     //use xBasedColliderManager to retrieve already arranged data that may collide with datum (ie, close enought to datum considering x position)
     if (nearestXBelowAlreadyArrangedData != null) {
       //visit x-below already arranged nodes
       dln = xBasedColliderManager.dln(nearestXBelowAlreadyArrangedData);
-      visitToGatherXBasedPossibleColliders(dln, dln, "below", xBasedColliderManager, xBasedPossibleColliders);
+      visitToGatherXBasedPossibleColliders(dln, dln, "below", xBasedPossibleColliders);
     }
 
     if (nearestXAboveAlreadyArrangedData != null) {
       //visit x-above already arranged nodes
       dln = xBasedColliderManager.dln(nearestXAboveAlreadyArrangedData);
-      visitToGatherXBasedPossibleColliders(dln, dln, "above", xBasedColliderManager, xBasedPossibleColliders);
+      visitToGatherXBasedPossibleColliders(dln, dln, "above", xBasedPossibleColliders);
     }
 
     //-->for metrics purpose
@@ -231,7 +231,7 @@ d3.layout.beeswarm = function () {
     return (Math.pow(d1.y-d0.y, 2) + Math.pow(d1.x-d0.x, 2)) < minSquareDistanceBetweenCircles;
   };
 
-  function collidesWithBelow(datum, visitedDln, yBasedColliderManager, visitCount) {
+  function collidesWithBelow(datum, visitedDln, visitCount) {
     if (visitedDln === null) { // special case: y_min reached, no collision detected
       return false;
     } else if ((datum.y - visitedDln.datum.y) > minDistanceBetweenCircles) {
@@ -241,11 +241,11 @@ d3.layout.beeswarm = function () {
       return true;
     } else {
       // continue visit
-      return collidesWithBelow(datum, visitedDln.below, yBasedColliderManager, visitCount++)
+      return collidesWithBelow(datum, visitedDln.below, visitCount++)
     }
   };
 
-  function collidesWithAbove(datum, visitedDln, yBasedColliderManager, visitCount) {
+  function collidesWithAbove(datum, visitedDln, visitCount) {
     if (visitedDln === null) { // special case: y_max reached, no collision detected
       return false;
     } else if ((visitedDln.datum.y - datum.y) > minDistanceBetweenCircles) {
@@ -255,18 +255,18 @@ d3.layout.beeswarm = function () {
       return true;
     } else {
       // continue visit
-      return collidesWithAbove(datum, visitedDln.above, yBasedColliderManager, visitCount++)
+      return collidesWithAbove(datum, visitedDln.above, visitCount++)
     }
   };
 
-  function collidesWithOther (datum, visitedDln, yBasedColliderManager) {
+  function collidesWithOther (datum, visitedDln) {
     var visitCount = 0;
     //visit below dlns for collision check
-    if (collidesWithBelow(datum, visitedDln.below, yBasedColliderManager, visitCount++)) {
+    if (collidesWithBelow(datum, visitedDln.below, visitCount++)) {
       return true;
     } else {
       //visit above dlns for collision check
-      return collidesWithAbove(datum, visitedDln.above, yBasedColliderManager, visitCount++);
+      return collidesWithAbove(datum, visitedDln.above, visitCount++);
     }
   };
 
