@@ -143,7 +143,7 @@ d3.layout.beeswarm = function () {
 	function findNearestPossibleCollider(dln, visitedDln, direction) {
     if (visitedDln === null) { // special case: max reached
       return null;
-    } else if ((direction==="below")
+    } else if ((direction==="prev")
                ? dln.value - visitedDln.value > minDistanceBetweenCircles
                : visitedDln.value - dln.value > minDistanceBetweenCircles
               ) {
@@ -161,7 +161,7 @@ d3.layout.beeswarm = function () {
   function visitToGatherXBasedPossibleColliders(dln, visitedDln, direction, xBasedPossibleColliders) {
     if (visitedDln === null) { // special case: extreme reached
       return;
-    } else if ((direction==="below")
+    } else if ((direction==="prev")
                ? dln.value - visitedDln.value > minDistanceBetweenCircles
                : visitedDln.value - dln.value > minDistanceBetweenCircles
               ) {
@@ -179,20 +179,20 @@ d3.layout.beeswarm = function () {
     var xBasedPossibleColliders = [];
     var dln = xBasedDataManager.dln(datum);
     //use xBasedDataManager to retrieve nearest already arranged data
-    var nearestXBelowAlreadyArrangedData = findNearestPossibleCollider(dln, dln.below, "below");
-    var nearestXAboveAlreadyArrangedData = findNearestPossibleCollider(dln, dln.above, "above");
+    var nearestXPrevAlreadyArrangedData = findNearestPossibleCollider(dln, dln.prev, "prev");
+    var nearestXNextAlreadyArrangedData = findNearestPossibleCollider(dln, dln.next, "next");
 
     //use xBasedColliderManager to retrieve already arranged data that may collide with datum (ie, close enought to datum considering x position)
-    if (nearestXBelowAlreadyArrangedData != null) {
-      //visit x-below already arranged nodes
-      dln = xBasedColliderManager.dln(nearestXBelowAlreadyArrangedData);
-      visitToGatherXBasedPossibleColliders(dln, dln, "below", xBasedPossibleColliders);
+    if (nearestXPrevAlreadyArrangedData != null) {
+      //visit x-prev already arranged nodes
+      dln = xBasedColliderManager.dln(nearestXPrevAlreadyArrangedData);
+      visitToGatherXBasedPossibleColliders(dln, dln, "prev", xBasedPossibleColliders);
     }
 
-    if (nearestXAboveAlreadyArrangedData != null) {
-      //visit x-above already arranged nodes
-      dln = xBasedColliderManager.dln(nearestXAboveAlreadyArrangedData);
-      visitToGatherXBasedPossibleColliders(dln, dln, "above", xBasedPossibleColliders);
+    if (nearestXNextAlreadyArrangedData != null) {
+      //visit x-next already arranged nodes
+      dln = xBasedColliderManager.dln(nearestXNextAlreadyArrangedData);
+      visitToGatherXBasedPossibleColliders(dln, dln, "next", xBasedPossibleColliders);
     }
 
     //-->for metrics purpose
@@ -234,7 +234,7 @@ d3.layout.beeswarm = function () {
   function visitToDetectCollisionWithOther(datum, visitedDln, direction, visitCount) {
     if (visitedDln === null) { // special case: y_max reached, no collision detected
       return false;
-    } else if ((direction==="below")
+    } else if ((direction==="prev")
                ? datum.y - visitedDln.datum.y > minDistanceBetweenCircles
                : visitedDln.datum.y - datum.y > minDistanceBetweenCircles
               ) {
@@ -250,12 +250,12 @@ d3.layout.beeswarm = function () {
 
   function collidesWithOther (datum, visitedDln) {
     var visitCount = 0;
-    //visit below dlns for collision check
-    if (visitToDetectCollisionWithOther(datum, visitedDln.below, "below", visitCount++)) {
+    //visit prev dlns for collision check
+    if (visitToDetectCollisionWithOther(datum, visitedDln.prev, "prev", visitCount++)) {
       return true;
     } else {
-      //visit above dlns for collision check
-      return visitToDetectCollisionWithOther(datum, visitedDln.above, "above", visitCount++);
+      //visit next dlns for collision check
+      return visitToDetectCollisionWithOther(datum, visitedDln.next, "next", visitCount++);
     }
   };
 
@@ -269,7 +269,7 @@ d3.layout.beeswarm = function () {
 
   // data in SortedDirectAccessDoublyLinkedList are sorted by 'value', from min to max, in a doubly-linked list
   // each node in the doubly-linked list is of the form {datum: , value: , prev: , next: }
-  // 'datum' refers to the original datum; 'value' is retrieved from data, below'/'above' refer to previous/next value-based nodes
+  // 'datum' refers to the original datum; 'value' is retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
 
   function SortedDirectAccessDoublyLinkedList () {
     this._valueAccessor = // accessor to the value to sort on
@@ -320,32 +320,32 @@ d3.layout.beeswarm = function () {
     var dln = {
       datum: datum, // original datum
       value: this._valueAccessor(datum),
-      below: null,	// previous value-based node
-      above: null		// next value-based node
+      prev: null,	// previous value-based node
+      next: null		// next value-based node
     };
 
     //insert node in the adequate position in the doubly-linked list
     if (this.size === 0) { //special case: no node in the list yet
       this._min = this._max = dln;
     } else if (dln.value <= this._min.value) {//special case: new datum is the min
-      dln.above = this._min;
-      dln.above.below = dln;
+      dln.next = this._min;
+      dln.next.prev = dln;
       this._min = dln;
     } else if (dln.value >= this._max.value) { //special case: new datum is the max
-      dln.below = this._max;
-      dln.below.above = dln;
+      dln.prev = this._max;
+      dln.prev.next = dln;
       this._max = dln;
     } else {
       //insert the node at the adequate position
       var current = this._max;
-      //loop to find immediate below
+      //loop to find immediate prev
       while (current.value > dln.value) {
-        current = current.below;
+        current = current.prev;
       }
-      dln.below = current;
-      dln.above = current.above;
-      dln.above.below = dln;
-      dln.below.above = dln;
+      dln.prev = current;
+      dln.next = current.next;
+      dln.next.prev = dln;
+      dln.prev.next = dln;
     }
 
     //direct access to the node
@@ -365,15 +365,15 @@ d3.layout.beeswarm = function () {
     if (this.size === 1) { //special case: last item to remove
       this._min = this._max = null;
     } else if (dln === this._min) { //special case: datum is the min
-      this._min = this._min.above;
-      this._min.below = null;
+      this._min = this._min.next;
+      this._min.prev = null;
     } else if (dln === this._max) { //special case: datum is the max
-      this._max = this._max.below;
-      this._max.above = null;
+      this._max = this._max.prev;
+      this._max.next = null;
     } else {
       //remove pointers to the node
-      dln.above.below = dln.below;
-      dln.below.above = dln.above;
+      dln.next.prev = dln.prev;
+      dln.prev.next = dln.next;
     }
 
     dln = null // carbage collector
