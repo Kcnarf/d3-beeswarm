@@ -2,11 +2,12 @@ d3.layout.beeswarm = function () {
   /////// Inputs ///////
   var data = [];              // original data to arrange
   var radius = 4;             // default radius
+  var side = "symetric";      // default side; "positive" and "negative" are also available
   var x =                     // accessor to the x value
           function (datum) {
             return datum.x;
           };
-
+  
   /////// Result ///////
   var arrangement;            // result, array of {datum: , x: , y: }
 
@@ -44,6 +45,18 @@ d3.layout.beeswarm = function () {
     return _beeswarm;
   };
 
+  _beeswarm.side = function (_) {
+    if (!arguments.length) return side;
+    if (_ === "symetric" ||
+        _ === "positive" ||
+        _ === "negative"
+       ) {
+      side = _;
+    }
+    
+    return _beeswarm;
+  };
+
   _beeswarm.x = function (_) {
     if (!arguments.length) return x;
     x = _;
@@ -65,7 +78,8 @@ d3.layout.beeswarm = function () {
         xBasedPossibleColliders.forEach(function(xbpc) {
           relativeYPos = yPosRelativeToXbpc(xbpc, d);
           placeBelow(d, xbpc, relativeYPos);
-          if (isBetterPlacement(d, bestYPosition) &&
+          if (isAuthorizedPlacement(d) &&
+              isBetterPlacement(d, bestYPosition) &&
               !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
             bestYPosition = d.y;
           }
@@ -75,9 +89,11 @@ d3.layout.beeswarm = function () {
             maxVisitedColliders = visitedColliderCount;
           }
           visitedColliderCount = 0;
+          totalTestedPlacements += 1;
           //<--for metrics purpose
           placeAbove(d, xbpc, relativeYPos);
-          if (isBetterPlacement(d, bestYPosition) &&
+          if (isAuthorizedPlacement(d) &&
+              isBetterPlacement(d, bestYPosition) &&
               !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
             bestYPosition = d.y;
           }
@@ -87,8 +103,8 @@ d3.layout.beeswarm = function () {
             maxVisitedColliders = visitedColliderCount;
           }
           visitedColliderCount = 0;
+          totalTestedPlacements += 1;
           //<--for metrics purpose
-          totalTestedPlacements += 2; //for metrics purpose
         })
       };
       d.y = bestYPosition;
@@ -202,6 +218,16 @@ d3.layout.beeswarm = function () {
     }
     //<--for metrics purpose
     return xBasedPossibleColliders;
+  };
+      
+  function isAuthorizedPlacement(datum) {
+    if (side === "symetric") {
+      return true;
+    } else if (side === "positive") {
+      return datum.y>=0;
+    } else {
+      return datum.y<=0;
+    }
   };
 
   function isBetterPlacement(datum, bestYPosition) {
