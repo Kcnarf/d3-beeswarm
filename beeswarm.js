@@ -231,42 +231,31 @@ d3.layout.beeswarm = function () {
     return (Math.pow(d1.y-d0.y, 2) + Math.pow(d1.x-d0.x, 2)) < minSquareDistanceBetweenCircles;
   };
 
-  function collidesWithBelow(datum, visitedDln, visitCount) {
-    if (visitedDln === null) { // special case: y_min reached, no collision detected
-      return false;
-    } else if ((datum.y - visitedDln.datum.y) > minDistanceBetweenCircles) {
-      // stop visit, no collision detected, remaining data are too far away
-      return false;
-    } else if (areCirclesColliding(datum, visitedDln.datum)) {
-      return true;
-    } else {
-      // continue visit
-      return collidesWithBelow(datum, visitedDln.below, visitCount++)
-    }
-  };
-
-  function collidesWithAbove(datum, visitedDln, visitCount) {
+  function visitToDetectCollisionWithOther(datum, visitedDln, direction, visitCount) {
     if (visitedDln === null) { // special case: y_max reached, no collision detected
       return false;
-    } else if ((visitedDln.datum.y - datum.y) > minDistanceBetweenCircles) {
+    } else if ((direction==="below")
+               ? datum.y - visitedDln.datum.y > minDistanceBetweenCircles
+               : visitedDln.datum.y - datum.y > minDistanceBetweenCircles
+              ) {
       // stop visit, no collision detected, remaining data are too far away
       return false;
     } else if (areCirclesColliding(datum, visitedDln.datum)) {
       return true;
     } else {
       // continue visit
-      return collidesWithAbove(datum, visitedDln.above, visitCount++)
+      return visitToDetectCollisionWithOther(datum, visitedDln[direction], direction, visitCount++)
     }
   };
 
   function collidesWithOther (datum, visitedDln) {
     var visitCount = 0;
     //visit below dlns for collision check
-    if (collidesWithBelow(datum, visitedDln.below, visitCount++)) {
+    if (visitToDetectCollisionWithOther(datum, visitedDln.below, "below", visitCount++)) {
       return true;
     } else {
       //visit above dlns for collision check
-      return collidesWithAbove(datum, visitedDln.above, visitCount++);
+      return visitToDetectCollisionWithOther(datum, visitedDln.above, "above", visitCount++);
     }
   };
 
