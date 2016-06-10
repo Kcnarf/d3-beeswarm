@@ -1,21 +1,21 @@
 d3.layout.beeswarm = function () {		
   /////// Inputs ///////
-  var data = [];							// original data to arrange
-  var	radius = 4;							// default radius
-  var	x =											// accessor to the x value
+  var data = [];              // original data to arrange
+  var	radius = 4;             // default radius
+  var	x =                     // accessor to the x value
           function (datum) {
             return datum.x;
           };
 
   /////// Result ///////
-  var arrangement; 						// result, array of {datum: , x: , y: }
+  var arrangement;            // result, array of {datum: , x: , y: }
 
   /////// Internals ///////
   var minDistanceBetweenCircles;
   var minSquareDistanceBetweenCircles;
-  var xBasedDataManager;			// for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
-  var xBasedColliderManager;	// for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
-  var yBasedColliderManager;	// for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
+  var xBasedDataManager;      // for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
+  var xBasedColliderManager;  // for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
+  var yBasedColliderManager;  // for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
 
 
   //--> for metrics purpose
@@ -24,7 +24,7 @@ d3.layout.beeswarm = function () {
       visitedColliderCount, totalVisitedColliders, maxVisitedColliders;
   //<-- for metrics purpose
 
-  function _beeswarm () {}; 		// constructor ???
+  function _beeswarm () {};   // constructor ???
 
   ///////////////////////
   ///////// API /////////
