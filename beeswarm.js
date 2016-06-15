@@ -73,7 +73,6 @@ d3.layout.beeswarm = function () {
       if (xBasedPossibleColliders.length===0) {
         bestYPosition = 0;
       } else {
-        debugger
         yBasedColliderManager.clear();
         yBasedColliderManager.addMany(xBasedPossibleColliders);
         // try to place on the x-axis
