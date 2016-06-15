@@ -20,7 +20,7 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. The final arrangemen
 In your HTML file, load the plugin after loading D3. The result may look like:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://rawgit.com/Kcnarf/d3.layout.swarmX/master/beeswarm.js"></script>
+<script src="https://rawgit.com/Kcnarf/d3.layout.beeswarm/master/beeswarm.js"></script>
 ```
 
 Then, in your javascript:
