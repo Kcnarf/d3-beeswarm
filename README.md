@@ -39,7 +39,7 @@ var swarm = d3.layout.beeswarm()
                                                 // each element of data remains unchanged
 ```
 
-Finnaly, in your javascript, in order to draw the swarm:
+Finally, in your javascript, in order to draw the swarm:
 ```javascript
 d3.selectAll("circle")
   .data(swarm)
