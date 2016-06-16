@@ -23,7 +23,7 @@ In your HTML file, load the plugin after loading D3. The result may look like:
 <script src="https://rawgit.com/Kcnarf/d3.layout.beeswarm/master/beeswarm.js"></script>
 ```
 
-Then, in your javascript:
+Later, in your javascript, in order to define the arrangement:
 ```javascript
 var swarm = d3.layout.beeswarm()
   .data(data)                                 // set the data to arrange
@@ -38,6 +38,18 @@ var swarm = d3.layout.beeswarm()
                                                 // where datum refers to an element of data
                                                 // each element of data remains unchanged
 ```
+
+Finnaly, in your javascript, in order to draw the swarm:
+```javascript
+d3.selectAll("circle")
+  .data(swarm)
+  .enter()
+    .append("circle")
+      .attr("cx", function(bee) { return bee.x; })
+      .attr("cy", function(bee) { return bee.y; })
+      .style("fill", function(bee) { return fill(bee.datum.rank); })
+```
+In the last line, ```bee.datum``` refers to the original datum.
 
 #### Reference
 * R package: <a href=http://www.cbs.dtu.dk/~eklund/beeswarm/'>http://www.cbs.dtu.dk/~eklund/beeswarm/</a>
