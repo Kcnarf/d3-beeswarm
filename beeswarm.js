@@ -85,7 +85,7 @@ d3.layout.beeswarm = function () {
         yBasedColliderManager.clear();
         yBasedColliderManager.addMany(xBasedPossibleColliders);
         // try to place on the x-axis
-        d.y = 0;
+        d.free = 0;
         if (!collidesWithOther(d, yBasedColliderManager.closestTo0())) {
           bestYPosition = 0;
           //-->for metrics purpose
@@ -104,7 +104,7 @@ d3.layout.beeswarm = function () {
             if (isAuthorizedPlacement(d) &&
                 isBetterPlacement(d, bestYPosition) &&
                 !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
-              bestYPosition = d.y;
+              bestYPosition = d.free;
             }
             //-->for metrics purpose
             totalVisitedColliders += visitedColliderCount;
@@ -118,7 +118,7 @@ d3.layout.beeswarm = function () {
             if (isAuthorizedPlacement(d) &&
                 isBetterPlacement(d, bestYPosition) &&
                 !collidesWithOther(d, yBasedColliderManager.dln(xbpc))) {
-              bestYPosition = d.y;
+              bestYPosition = d.free;
             }
             //-->for metrics purpose
             totalVisitedColliders += visitedColliderCount;
@@ -131,7 +131,7 @@ d3.layout.beeswarm = function () {
         	})
         }
       };
-      d.y = bestYPosition;
+      d.free = bestYPosition;
       xBasedColliderManager.add(d);
     });
     return arrangement;
@@ -157,20 +157,20 @@ d3.layout.beeswarm = function () {
       return {
         datum: d,
         id: i,
-        x: distributeOn(d),
-        y: -Infinity
+        fixed: distributeOn(d),
+        free: -Infinity
       }; 
     });
 
     minDistanceBetweenCircles = 2*radius;
     minSquareDistanceBetweenCircles = Math.pow(minDistanceBetweenCircles, 2);
     xBasedDataManager = new SortedDirectAccessDoublyLinkedList()
-      .valueAccessor(function(d){return d.x;})
+      .valueAccessor(function(d){return d.fixed;})
       .addMany(arrangement);
     xBasedColliderManager = new SortedDirectAccessDoublyLinkedList()
-      .valueAccessor(function(d){return d.x;});
+      .valueAccessor(function(d){return d.fixed;});
     yBasedColliderManager = new SortedDirectAccessDoublyLinkedList()
-      .valueAccessor(function(d){return d.y;});
+      .valueAccessor(function(d){return d.free;});
 
 		
     //-->for metrics purpose
@@ -190,7 +190,7 @@ d3.layout.beeswarm = function () {
       // stop visit, remaining data are too far away
       return null;
     } else {// visitedDln is close enought
-      if (isFinite(visitedDln.datum.y)) { // visitedDln is already arranged, and hence is the nearest possible x-based collider
+      if (isFinite(visitedDln.datum.free)) { // visitedDln is already arranged, and hence is the nearest possible x-based collider
         return(visitedDln.datum);
       }
       // continue finding
@@ -248,29 +248,29 @@ d3.layout.beeswarm = function () {
     if (side === "symetric") {
       return true;
     } else if (side === "positive") {
-      return datum.y>=0;
+      return datum.free>=0;
     } else {
-      return datum.y<=0;
+      return datum.free<=0;
     }
   };
 
   function isBetterPlacement(datum, bestYPosition) {
-    return Math.abs(datum.y) < Math.abs(bestYPosition);
+    return Math.abs(datum.free) < Math.abs(bestYPosition);
   };
 
   function yPosRelativeToXbpc(xbpc, d) {
     // handle Float approximation with +1E-6
-    return Math.sqrt(minSquareDistanceBetweenCircles-Math.pow(d.x-xbpc.x,2))+1E-6;
+    return Math.sqrt(minSquareDistanceBetweenCircles-Math.pow(d.fixed-xbpc.fixed,2))+1E-6;
   };
 
   function placeBelow(d, aad, relativeYPos) {
-    d.y = aad.y - relativeYPos;
+    d.free = aad.free - relativeYPos;
 
     //showOnTheFlyCircleArrangement(d, "test");
   };
 
   function placeAbove(d, aad, relativeYPos) {
-    d.y = aad.y + relativeYPos;
+    d.free = aad.free + relativeYPos;
 
     //showOnTheFlyCircleArrangement(d, "test");
   };
@@ -278,15 +278,15 @@ d3.layout.beeswarm = function () {
   function areCirclesColliding(d0, d1) {
     visitedColliderCount++; //for metrics prupose
 
-    return (Math.pow(d1.y-d0.y, 2) + Math.pow(d1.x-d0.x, 2)) < minSquareDistanceBetweenCircles;
+    return (Math.pow(d1.free-d0.free, 2) + Math.pow(d1.fixed-d0.fixed, 2)) < minSquareDistanceBetweenCircles;
   };
 
   function visitToDetectCollisionWithOther(datum, visitedDln, direction, visitCount) {
     if (visitedDln === null) { // special case: y_max reached, no collision detected
       return false;
     } else if ((direction==="prev")
-               ? datum.y - visitedDln.datum.y > minDistanceBetweenCircles
-               : visitedDln.datum.y - datum.y > minDistanceBetweenCircles
+               ? datum.free - visitedDln.datum.free > minDistanceBetweenCircles
+               : visitedDln.datum.free - datum.free > minDistanceBetweenCircles
               ) {
       // stop visit, no collision detected, remaining data are too far away
       return false;
