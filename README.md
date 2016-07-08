@@ -30,6 +30,8 @@ Later, in your javascript, in order to define the arrangement:
 var swarm = d3.layout.beeswarm()
   .data(data)                                 // set the data to arrange
   .radius(4)                                  // set the radius for overlapping detection
+  .orientation("horizontal")                  // set the orientation
+                                                // could also be 'vertical'
   .side("symetric")                           // set the side(s) available for accumulation
                                                 // could be only 'positive' or 'negative' side
   .distributeOn(function(d){                  // set the value accessor to distribute on
