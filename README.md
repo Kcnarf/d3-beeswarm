@@ -1,7 +1,9 @@
 # d3.layout.beeswarm
 This d3 plugin produces a _beeswarm_ arrangement, thanks to a dedicated algorithm and without the use a the d3.force layout.
 
-#### Context
+Currently available only for __d3 v3.x__
+
+## Context
 Beeswarm is a one-dimensional scatter plot with closely-packed, non-overlapping points. The beeswarm plot is a useful technique when we wish to see not only the measured values of interest for each data point, but also the distribution of these values
 
 Some beeswarm-like plot implementation uses force layout, but the force layout simulation has some drawbacks:
@@ -12,11 +14,11 @@ Some beeswarm-like plot implementation uses force layout, but the force layout s
 This _beeswarm_ plugin uses a dedicated one pass algorithm. The final arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
 
 
-#### Examples
+## Examples
 * This <a href='http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8'>block</a> uses this __d3.layout.beeswarm__ plugin.
 * This <a href='http://poly-graph.co/vocabulary.html'>post</a> uses a beeswarm plot (but not this plugin).
 
-#### Usages
+## Usages
 In your HTML file, load the plugin after loading D3. The result may look like:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
@@ -31,7 +33,7 @@ var swarm = d3.layout.beeswarm()
   .side("symetric")                           // set the side(s) available for accumulation
                                                 // could be only 'positive' or 'negative' side
   .x(function(d){                             // set the 'x' value accessor
-       return xScale(d.trend);                  // evaluated once on each element of data
+       return xScale(d.foo);                    // evaluated once on each element of data
    })                                           // when starting the arrangement
   .arrange();                                 // launch arrangement computation;
                                                 // return an array of {datum: , x: , y: }
@@ -47,9 +49,15 @@ d3.selectAll("circle")
     .append("circle")
       .attr("cx", function(bee) { return bee.x; })
       .attr("cy", function(bee) { return bee.y; })
-      .style("fill", function(bee) { return fill(bee.datum.rank); })
+      .style("fill", function(bee) { return fillScale(bee.datum.bar); })
 ```
 In the last line, ```bee.datum``` refers to the original datum.
 
-#### Reference
+## Reference
 * R package: <a href=http://www.cbs.dtu.dk/~eklund/beeswarm/'>http://www.cbs.dtu.dk/~eklund/beeswarm/</a>
+
+
+## How To ...
+
+* this [issue](https://github.com/Kcnarf/d3.layout.beeswarm/issues/7) explains how to arrange in a particular order along the main axis (eg. from x-min to x-max, or extremes to center).
+* this [issue](https://github.com/Kcnarf/d3.layout.beeswarm/issues/2) explains how to handle too large viz due to extreme accumulations.
