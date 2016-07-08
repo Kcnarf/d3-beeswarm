@@ -132,6 +132,13 @@ d3.layout.beeswarm = function () {
         }
       };
       d.free = bestYPosition;
+      if (orientation === "horizontal") {
+        d.x = d.fixed;
+        d.y = bestYPosition;
+      } else {
+        d.x = bestYPosition;
+        d.y = d.fixed;
+      }
       xBasedColliderManager.add(d);
     });
     return arrangement;
