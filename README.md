@@ -11,7 +11,7 @@ Some beeswarm-like plot implementation uses force layout, but the force layout s
 * it naturally tries to reach its equilibrium by rearranging data points in the 2D space, which can be disruptive to the ordering of the data
 * it requires several iterations to reach its equilibrium
 
-This _beeswarm_ plugin uses a dedicated one pass algorithm. The final arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint.
+This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plugin arranges data in an horizontal way. In this case, the final arrangement is contraint in _x_ and free in _y_. This means that data are arranged along the x-axis, and that the position of each data reflects its precise _x_ value. _y_ position doesn't reflect any data-related value, and only serves the non-overlapping constraint. This plugin can also arrange data in a vertical way.
 
 
 ## Examples
