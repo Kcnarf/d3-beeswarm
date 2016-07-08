@@ -1,9 +1,10 @@
 d3.layout.beeswarm = function () {		
   /////// Inputs ///////
-  var data = [];              // original data to arrange
-  var radius = 4;             // default radius
-  var side = "symetric";      // default side; "positive" and "negative" are also available
-  var distributeOn =          // accessor to the x value
+  var data = [];                  // original data to arrange
+  var radius = 4;                 // default radius
+  var orientation = "horizontal"  // default orientation; "vertical" also available
+  var side = "symetric";          // default side; "positive" and "negative" are also available
+  var distributeOn =              // accessor to the x value
           function (datum) {
             return datum.x;
           };
@@ -11,10 +12,10 @@ d3.layout.beeswarm = function () {
   /////// Internals ///////
   var minDistanceBetweenCircles;
   var minSquareDistanceBetweenCircles;
-  var xBasedDataManager;      // for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
-  var xBasedColliderManager;  // for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
-  var yBasedColliderManager;  // for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
-  var arrangement;            // result, array of {datum: , x: , y: }
+  var xBasedDataManager;          // for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
+  var xBasedColliderManager;      // for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
+  var yBasedColliderManager;      // for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
+  var arrangement;                // result, array of {datum: , x: , y: }
 
   //--> for metrics purpose
   var totalPossibleColliders, maxPossibleColliders,
@@ -22,7 +23,7 @@ d3.layout.beeswarm = function () {
       visitedColliderCount, totalVisitedColliders, maxVisitedColliders;
   //<-- for metrics purpose
 
-  function _beeswarm () {};   // constructor ???
+  function _beeswarm () {};       // constructor ???
 
   ///////////////////////
   ///////// API /////////
@@ -38,6 +39,17 @@ d3.layout.beeswarm = function () {
   _beeswarm.radius = function (_) {
     if (!arguments.length) return radius;
     radius = _;
+    
+    return _beeswarm;
+  };
+
+  _beeswarm.orientation = function (_) {
+    if (!arguments.length) return orientation;
+    if (_ === "horizontal" ||
+        _ === "vertical"
+       ) {
+      orientation = _;
+    }
     
     return _beeswarm;
   };
@@ -312,15 +324,15 @@ d3.layout.beeswarm = function () {
   // 'datum' refers to the original datum; 'value' is retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
 
   function SortedDirectAccessDoublyLinkedList () {
-    this._valueAccesor =      // accessor to the value to sort on
+    this._valueAccesor =          // accessor to the value to sort on
       function (obj) {
         return obj.value;
       }
-    this._min = null;         // reference to a doubly-linked node with the min value
-    this._max = null;         // reference to a doubly-linked node with the max value
-    this._closestTo0 = null;  // reference to the doubly-linked node with the value closest or egal to 0
-    this.size = 0;            // number of data in the doubly-linked list
-    this._idToNode = {};      // direct access to a node of the doubly-linked list
+    this._min = null;             // reference to a doubly-linked node with the min value
+    this._max = null;             // reference to a doubly-linked node with the max value
+    this._closestTo0 = null;      // reference to the doubly-linked node with the value closest or egal to 0
+    this.size = 0;                // number of data in the doubly-linked list
+    this._idToNode = {};          // direct access to a node of the doubly-linked list
   };
 
   SortedDirectAccessDoublyLinkedList.prototype.valueAccessor = function (_) {
