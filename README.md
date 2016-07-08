@@ -32,7 +32,7 @@ var swarm = d3.layout.beeswarm()
   .radius(4)                                  // set the radius for overlapping detection
   .side("symetric")                           // set the side(s) available for accumulation
                                                 // could be only 'positive' or 'negative' side
-  .x(function(d){                             // set the 'x' value accessor
+  .distributeOn(function(d){                  // set the value accessor to distribute on
        return xScale(d.foo);                    // evaluated once on each element of data
    })                                           // when starting the arrangement
   .arrange();                                 // launch arrangement computation;
