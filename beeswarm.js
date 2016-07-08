@@ -3,13 +3,10 @@ d3.layout.beeswarm = function () {
   var data = [];              // original data to arrange
   var radius = 4;             // default radius
   var side = "symetric";      // default side; "positive" and "negative" are also available
-  var x =                     // accessor to the x value
+  var distributeOn =          // accessor to the x value
           function (datum) {
             return datum.x;
           };
-  
-  /////// Result ///////
-  var arrangement;            // result, array of {datum: , x: , y: }
 
   /////// Internals ///////
   var minDistanceBetweenCircles;
@@ -17,7 +14,7 @@ d3.layout.beeswarm = function () {
   var xBasedDataManager;      // for collision detection, x-based sorted direct-access doubly-linked list of data, used to find nearest already arranged data
   var xBasedColliderManager;  // for collision detection, x-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
   var yBasedColliderManager;  // for collision detection, y-based sorted direct-access doubly-linked list of already arranged data, limit collision detection to already arranged neighbours
-
+  var arrangement;            // result, array of {datum: , x: , y: }
 
   //--> for metrics purpose
   var totalPossibleColliders, maxPossibleColliders,
@@ -57,9 +54,9 @@ d3.layout.beeswarm = function () {
     return _beeswarm;
   };
 
-  _beeswarm.x = function (_) {
-    if (!arguments.length) return x;
-    x = _;
+  _beeswarm.distributeOn = function (_) {
+    if (!arguments.length) return distributeOn;
+    distributeOn = _;
     
     return _beeswarm;
   };
@@ -148,7 +145,7 @@ d3.layout.beeswarm = function () {
       return {
         datum: d,
         id: i,
-        x: x(d),
+        x: distributeOn(d),
         y: -Infinity
       }; 
     });
