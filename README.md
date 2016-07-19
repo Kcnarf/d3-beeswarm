@@ -1,4 +1,4 @@
-# d3.layout.beeswarm
+# d3.beeswarm
 This d3 plugin produces a _beeswarm_ arrangement, thanks to a dedicated algorithm and without the use a the d3.force layout.
 
 Currently available only for __d3 v3.x__
@@ -15,20 +15,20 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 
 
 ## Examples
-* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) uses this __d3.layout.beeswarm__ plugin.
+* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) uses this __d3.beeswarm__ plugin.
 * This [post](http://poly-graph.co/vocabulary.html) uses a beeswarm plot (but not this plugin).
 
 ## Installing
 In your HTML file, load the plugin after loading D3. The result may look like:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://rawgit.com/Kcnarf/d3.layout.beeswarm/master/beeswarm.js"></script>
+<script src="https://rawgit.com/Kcnarf/d3.beeswarm/master/beeswarm.js"></script>
 ```
 
 ## TL;DR;
 In your javascript, in order to define the arrangement:
 ```javascript
-var swarm = d3.layout.beeswarm()
+var swarm = d3.beeswarm()
   .data(data)                                 // set the data to arrange
   .distributeOn(function(d){                  // set the value accessor to distribute on
        return xScale(d.foo);                    // evaluated once on each element of data
@@ -62,7 +62,7 @@ In the last line, ```bee.datum``` refers to the original datum.
 
 ## API
 
-<a name="beeswarm" href="#beeswarm">#</a> d3.layout.<b>beeswarm</b>()
+<a name="beeswarm" href="#beeswarm">#</a> d3.<b>beeswarm</b>()
 
 Creates a new beeswarm with the default settings:
 ```javascript
@@ -83,7 +83,7 @@ If _callback_ is specified, set the callback that evaluates the value to distrib
 The callback is evaluated once, on each element to arrange, at the beginning of the arrangement computation. The callback must return the final x-coordinate for an horizontal arrangement (or the final y-coordinate for a vertical arrangement). So if you use a d3.scale, your code should look like:
 
 ```javascript
-var swarm = d3.layout.beeswarm()
+d3.beeswarm()
   .data(data)
   .distributeOn(function(d){
        return xScale(d.foo);
@@ -117,5 +117,5 @@ Launches the arrangement computation. Return an array of ```{x: , y: , datum: }`
 
 ## How To
 
-* issue [option to arrange from minToMax, maxToMin, extremeToCenter, shuffled](https://github.com/Kcnarf/d3.layout.beeswarm/issues/7) explains how to arrange in a particular order. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
-* issue [add a maximum size, and provide strategies if exceeded](https://github.com/Kcnarf/d3.layout.beeswarm/issues/2) explains how to handle too large viz due to extreme accumulations. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
+* issue [option to arrange from minToMax, maxToMin, extremeToCenter, shuffled](https://github.com/Kcnarf/d3.beeswarm/issues/7) explains how to arrange in a particular order. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
+* issue [add a maximum size, and provide strategies if exceeded](https://github.com/Kcnarf/d3.beeswarm/issues/2) explains how to handle too large viz due to extreme accumulations. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).

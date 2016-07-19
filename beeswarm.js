@@ -1,8 +1,8 @@
-d3.layout.beeswarm = function () {		
+d3.beeswarm = function () {
   /////// Inputs ///////
   var data = [];                  // original data to arrange
   var radius = 4;                 // default radius
-  var orientation = "horizontal"  // default orientation; "vertical" also available
+  var orientation = "horizontal"; // default orientation; "vertical" also available
   var side = "symetric";          // default side; "positive" and "negative" are also available
   var distributeOn =              // accessor to the x value
           function (datum) {
@@ -23,53 +23,53 @@ d3.layout.beeswarm = function () {
       visitedColliderCount, totalVisitedColliders, maxVisitedColliders;
   //<-- for metrics purpose
 
-  function _beeswarm () {};       // constructor ???
+  function _beeswarm () {}       // constructor ???
 
   ///////////////////////
   ///////// API /////////
   ///////////////////////
 
   _beeswarm.data = function(_) {
-    if (!arguments.length) return data;
+    if (!arguments.length) { return data; }
     data = _;
-    
+
     return _beeswarm;
   };
 
   _beeswarm.radius = function (_) {
-    if (!arguments.length) return radius;
+    if (!arguments.length) { return radius; }
     radius = _;
-    
+
     return _beeswarm;
   };
 
   _beeswarm.orientation = function (_) {
-    if (!arguments.length) return orientation;
+    if (!arguments.length) { return orientation; }
     if (_ === "horizontal" ||
         _ === "vertical"
        ) {
       orientation = _;
     }
-    
+
     return _beeswarm;
   };
 
   _beeswarm.side = function (_) {
-    if (!arguments.length) return side;
+    if (!arguments.length) { return side; }
     if (_ === "symetric" ||
         _ === "positive" ||
         _ === "negative"
        ) {
       side = _;
     }
-    
+
     return _beeswarm;
   };
 
   _beeswarm.distributeOn = function (_) {
-    if (!arguments.length) return distributeOn;
+    if (!arguments.length) { return distributeOn; }
     distributeOn = _;
-    
+
     return _beeswarm;
   };
 
@@ -166,7 +166,7 @@ d3.layout.beeswarm = function () {
         id: i,
         fixed: distributeOn(d),
         free: -Infinity
-      }; 
+      };
     });
 
     minDistanceBetweenCircles = 2*radius;
@@ -179,20 +179,20 @@ d3.layout.beeswarm = function () {
     yBasedColliderManager = new SortedDirectAccessDoublyLinkedList()
       .valueAccessor(function(d){return d.free;});
 
-		
+
     //-->for metrics purpose
     totalPossibleColliders = maxPossibleColliders = 0;
     totalTestedPlacements = 0;
     visitedColliderCount = totalVisitedColliders = maxVisitedColliders =0;
     //<--for metrics purpose
-  };
+  }
 
 	function findNearestPossibleCollider(dln, visitedDln, direction) {
     if (visitedDln === null) { // special case: max reached
       return null;
-    } else if ((direction==="prev")
-               ? dln.value - visitedDln.value > minDistanceBetweenCircles
-               : visitedDln.value - dln.value > minDistanceBetweenCircles
+    } else if ((direction==="prev") ?
+               dln.value - visitedDln.value > minDistanceBetweenCircles :
+               visitedDln.value - dln.value > minDistanceBetweenCircles
               ) {
       // stop visit, remaining data are too far away
       return null;
@@ -203,14 +203,14 @@ d3.layout.beeswarm = function () {
       // continue finding
       return findNearestPossibleCollider(dln, visitedDln[direction], direction);
     }
-  };
+  }
 
   function visitToGatherXBasedPossibleColliders(dln, visitedDln, direction, xBasedPossibleColliders) {
     if (visitedDln === null) { // special case: extreme reached
       return;
-    } else if ((direction==="prev")
-               ? dln.value - visitedDln.value > minDistanceBetweenCircles
-               : visitedDln.value - dln.value > minDistanceBetweenCircles
+    } else if ((direction==="prev") ?
+               dln.value - visitedDln.value > minDistanceBetweenCircles :
+               visitedDln.value - dln.value > minDistanceBetweenCircles
               ) {
       // stop visit, remaining data are too far away
       return;
@@ -220,7 +220,7 @@ d3.layout.beeswarm = function () {
       // continue gathering
       visitToGatherXBasedPossibleColliders(dln, visitedDln[direction], direction, xBasedPossibleColliders);
     }
-  };
+  }
 
   function gatherXBasedPossibleColliders (datum) {
     var xBasedPossibleColliders = [];
@@ -249,8 +249,8 @@ d3.layout.beeswarm = function () {
     }
     //<--for metrics purpose
     return xBasedPossibleColliders;
-  };
-      
+  }
+
   function isAuthorizedPlacement(datum) {
     if (side === "symetric") {
       return true;
@@ -259,41 +259,37 @@ d3.layout.beeswarm = function () {
     } else {
       return datum.free<=0;
     }
-  };
+  }
 
   function isBetterPlacement(datum, bestYPosition) {
     return Math.abs(datum.free) < Math.abs(bestYPosition);
-  };
+  }
 
   function yPosRelativeToXbpc(xbpc, d) {
     // handle Float approximation with +1E-6
     return Math.sqrt(minSquareDistanceBetweenCircles-Math.pow(d.fixed-xbpc.fixed,2))+1E-6;
-  };
+  }
 
   function placeBelow(d, aad, relativeYPos) {
     d.free = aad.free - relativeYPos;
-
-    //showOnTheFlyCircleArrangement(d, "test");
-  };
+  }
 
   function placeAbove(d, aad, relativeYPos) {
     d.free = aad.free + relativeYPos;
-
-    //showOnTheFlyCircleArrangement(d, "test");
-  };
+  }
 
   function areCirclesColliding(d0, d1) {
     visitedColliderCount++; //for metrics prupose
 
     return (Math.pow(d1.free-d0.free, 2) + Math.pow(d1.fixed-d0.fixed, 2)) < minSquareDistanceBetweenCircles;
-  };
+  }
 
   function visitToDetectCollisionWithOther(datum, visitedDln, direction, visitCount) {
     if (visitedDln === null) { // special case: y_max reached, no collision detected
       return false;
-    } else if ((direction==="prev")
-               ? datum.free - visitedDln.datum.free > minDistanceBetweenCircles
-               : visitedDln.datum.free - datum.free > minDistanceBetweenCircles
+    } else if ((direction==="prev") ?
+               datum.free - visitedDln.datum.free > minDistanceBetweenCircles :
+               visitedDln.datum.free - datum.free > minDistanceBetweenCircles
               ) {
       // stop visit, no collision detected, remaining data are too far away
       return false;
@@ -301,9 +297,9 @@ d3.layout.beeswarm = function () {
       return true;
     } else {
       // continue visit
-      return visitToDetectCollisionWithOther(datum, visitedDln[direction], direction, visitCount++)
+      return visitToDetectCollisionWithOther(datum, visitedDln[direction], direction, visitCount++);
     }
-  };
+  }
 
   function collidesWithOther (datum, visitedDln) {
     var visitCount = 0;
@@ -316,7 +312,7 @@ d3.layout.beeswarm = function () {
       // return visitToDetectCollisionWithOther(datum, visitedDln.next, "next", visitCount++);
       return visitToDetectCollisionWithOther(datum, visitedDln, "next", visitCount++);
     }
-  };
+  }
 
   ///////////////////////
   //////// Data /////////
@@ -334,22 +330,22 @@ d3.layout.beeswarm = function () {
     this._valueAccesor =          // accessor to the value to sort on
       function (obj) {
         return obj.value;
-      }
+      };
     this._min = null;             // reference to a doubly-linked node with the min value
     this._max = null;             // reference to a doubly-linked node with the max value
     this._closestTo0 = null;      // reference to the doubly-linked node with the value closest or egal to 0
     this.size = 0;                // number of data in the doubly-linked list
     this._idToNode = {};          // direct access to a node of the doubly-linked list
-  };
+  }
 
   SortedDirectAccessDoublyLinkedList.prototype.valueAccessor = function (_) {
-    if (!arguments.length) return this._valueAccesor;
+    if (!arguments.length) { return this._valueAccesor; }
     this._valueAccesor = _;
 
     //for chaining purpose
     return this;
   };
-      
+
   SortedDirectAccessDoublyLinkedList.prototype.closestTo0 = function () {
     return this._closestTo0;
   };
@@ -362,7 +358,7 @@ d3.layout.beeswarm = function () {
     this._idToNode = {};
 
     //for chaining purpose
-    return this
+    return this;
   };
 
   SortedDirectAccessDoublyLinkedList.prototype.dln = function (datum){
@@ -374,7 +370,7 @@ d3.layout.beeswarm = function () {
 
     data.forEach( function (datum, item) {
       this.add(datum);
-    }, this)
+    }, this);
 
     //for chaining purpose
     return this;
@@ -388,7 +384,7 @@ d3.layout.beeswarm = function () {
       prev: null,	// previous value-based node
       next: null		// next value-based node
     };
-	
+
     //insert node in the adequate position in the doubly-linked list
     if (this.size === 0) { //special case: no node in the list yet
       this._min = this._max = this._closestTo0 = dln;
@@ -414,7 +410,7 @@ d3.layout.beeswarm = function () {
         dln.prev.next = dln;
       }
       if (Math.abs(dln.value) < Math.abs(this._closestTo0.value)) {
-        this._closestTo0 = dln
+        this._closestTo0 = dln;
       }
     }
 
@@ -465,9 +461,9 @@ d3.layout.beeswarm = function () {
         dln.prev.next = dln.next;
       }
     }
-    
-    
-    dln = null // carbage collector
+
+
+    dln = null; // carbage collector
     delete this._idToNode[datum.id]; //remove direct access to the node
 
     //update size
@@ -475,7 +471,7 @@ d3.layout.beeswarm = function () {
 
     //for chaining purpose
     return this;
-  }
+  };
 
   return _beeswarm;
-}
+};
