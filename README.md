@@ -1,7 +1,7 @@
-# d3.beeswarm
+# d3-beeswarm
 This d3 plugin produces a _beeswarm_ arrangement, thanks to a dedicated algorithm and without the use a the d3.force layout.
 
-Currently available only for __d3 v3.x__
+Available only for __d3 v3.x__ and __d3 v4__.
 
 ## Context
 Beeswarm is a one-dimensional scatter plot with closely-packed, non-overlapping points. The beeswarm plot is a useful technique when we wish to see not only the measured values of interest for each data point, but also the distribution of these values
@@ -15,7 +15,7 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 
 
 ## Examples
-* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) uses this __d3.beeswarm__ plugin.
+* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) uses this __d3-beeswarm__ plugin.
 * This [post](http://poly-graph.co/vocabulary.html) uses a beeswarm plot (but not this plugin).
 
 ## Installing
@@ -44,7 +44,7 @@ var swarm = d3.beeswarm()
                                                 // each element of data remains unchanged
 ```
 
-Then, in your javascript, in order to draw the swarm:
+Then, later in your javascript, in order to draw the swarm:
 ```javascript
 d3.selectAll('circle')
   .data(swarm)
