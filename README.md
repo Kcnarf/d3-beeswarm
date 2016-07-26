@@ -78,7 +78,7 @@ If _data_ is specified, set the array of data to arrange and returns this beeswa
 
 <a name="beeswarm_distributeOn" href="#beeswarm_distributeOn">#</a> <i>beeswarm.</i><b>distributeOn</b>([callback])
 
-If _callback_ is specified, set the callback that evaluates the value to distribute on and returns this beeswarm. If _callback_ is specified, return the current callback, which defaults to ```function(d) { return d.x; }```.
+If _callback_ is specified, set the callback that evaluates the value to distribute on and returns this beeswarm. If _callback_ is not specified, return the current callback, which defaults to ```function(d) { return d.x; }```.
 
 The callback is evaluated once, on each element to arrange, at the beginning of the arrangement computation. The callback must return the final x-coordinate for an horizontal arrangement (or the final y-coordinate for a vertical arrangement). So if you use a d3.scale, your code should look like:
 
