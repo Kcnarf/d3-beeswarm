@@ -1,4 +1,4 @@
-d3.beeswarm = function () {
+module.exports = function () {
   /////// Inputs ///////
   var data = [];                  // original data to arrange
   var radius = 4;                 // default radius

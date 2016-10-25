@@ -1,0 +1,24 @@
+{
+  "name": "d3-beeswarm",
+  "version": "0.0.3",
+  "description": "D3 plugin which computes a 'beeswarm' arrangement",
+  "main": "beeswarm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kcnarf/d3-beeswarm.git"
+  },
+  "keywords": [
+    "d3",
+    "beeswarm",
+    "algorithm"
+  ],
+  "author": "“Sylvain <“sylvain.mina@gmail.com”>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/Kcnarf/d3-beeswarm/issues"
+  },
+  "homepage": "https://github.com/Kcnarf/d3-beeswarm#readme"
+}
