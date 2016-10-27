@@ -19,10 +19,13 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 * This [post](http://poly-graph.co/vocabulary.html) uses a beeswarm plot (but not this plugin).
 
 ## Installing
-In your HTML file, load the plugin after loading D3. The result may look like:
+If you use NPM, ```npm install d3-beeswarm```). Otherwise, load ```https://rawgit.com/Kcnarf/d3.beeswarm/master/build/d3-beeswarm.js``` to make it available in AMD, CommonJS, or vanilla environments. In vanilla, a d3 global is exported:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://rawgit.com/Kcnarf/d3.beeswarm/master/build/d3-beeswarm.js"></script>
+<script>
+  var swarm = d3.beeswarm();
+</script>
 ```
 
 ## TL;DR;
