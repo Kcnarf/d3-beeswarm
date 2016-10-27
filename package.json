@@ -1,6 +1,6 @@
 {
   "name": "d3-beeswarm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "D3 plugin which computes a 'beeswarm' arrangement",
   "keywords": [
     "d3",
