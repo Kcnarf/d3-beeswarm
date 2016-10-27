@@ -22,7 +22,7 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 In your HTML file, load the plugin after loading D3. The result may look like:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://rawgit.com/Kcnarf/d3.beeswarm/master/beeswarm.js"></script>
+<script src="https://rawgit.com/Kcnarf/d3.beeswarm/master/build/d3-beeswarm.js"></script>
 ```
 
 ## TL;DR;
