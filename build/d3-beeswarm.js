@@ -134,9 +134,9 @@
               visitedColliderCount = 0;
               totalTestedPlacements += 1;
               //<--for metrics purpose
-          	})
+          	});
           }
-        };
+        }
         d.free = bestYPosition;
         if (orientation === "horizontal") {
           d.x = d.fixed;
@@ -480,7 +480,7 @@
     };
 
     return _beeswarm;
-  };
+  }
 
   exports.beeswarm = beeswarm;
 

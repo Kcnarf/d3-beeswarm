@@ -128,9 +128,9 @@ export default function () {
             visitedColliderCount = 0;
             totalTestedPlacements += 1;
             //<--for metrics purpose
-        	})
+        	});
         }
-      };
+      }
       d.free = bestYPosition;
       if (orientation === "horizontal") {
         d.x = d.fixed;
@@ -474,4 +474,4 @@ export default function () {
   };
 
   return _beeswarm;
-};
+}
