@@ -3,17 +3,21 @@
 ////// Strucutre //////
 ///////////////////////
 
-// each data MUST have a 'value' property (for sorting)
-// each data MUST have a 'id' property (for direct-access)
+// each data MUST have a value to sort on, which default to the the 'value' attribute
+// each data MUST have a uniq id for direct-access, which defaults to the 'id' attribute
 
 // data in SortedDirectAccessDoublyLinkedList are sorted by 'value', from min to max, in a doubly-linked list
-// each node in the doubly-linked list is of the form {datum: , value: , prev: , next: }
-// 'datum' refers to the original datum; 'value' is retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
+// each node in the doubly-linked list is of the form {datum: , value: , id: , prev: , next: }
+// 'datum' refers to the original datum; 'value' and 'id' are retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
 
 export default function SortedDirectAccessDoublyLinkedList () {
-  this._valueAccesor =          // accessor to the value to sort on
+  this._valueAccessor =          // accessor to the value to sort on
     function (obj) {
       return obj.value;
+    };
+  this._idAccessor =         // accessor to the uniq id
+    function (obj) {
+      return obj.id;
     };
   this._min = null;             // reference to a doubly-linked node with the min value
   this._max = null;             // reference to a doubly-linked node with the max value
@@ -23,8 +27,16 @@ export default function SortedDirectAccessDoublyLinkedList () {
 }
 
 SortedDirectAccessDoublyLinkedList.prototype.valueAccessor = function (_) {
-  if (!arguments.length) { return this._valueAccesor; }
-  this._valueAccesor = _;
+  if (!arguments.length) { return this._valueAccessor; }
+  this._valueAccessor = _;
+
+  //for chaining purpose
+  return this;
+};
+
+SortedDirectAccessDoublyLinkedList.prototype.idAccessor = function (_) {
+  if (!arguments.length) { return this._idAccessor; }
+  this._idAccessor = _;
 
   //for chaining purpose
   return this;
@@ -47,24 +59,15 @@ SortedDirectAccessDoublyLinkedList.prototype.clear = function () {
 
 SortedDirectAccessDoublyLinkedList.prototype.dln = function (datum){
   // dln = doubly-linked node
-  return this._idToNode[datum.id];
-};
-
-SortedDirectAccessDoublyLinkedList.prototype.addMany = function (data) {
-
-  data.forEach( function (datum, item) {
-    this.add(datum);
-  }, this);
-
-  //for chaining purpose
-  return this;
+  return this._idToNode[this._idAccessor(datum)];
 };
 
 SortedDirectAccessDoublyLinkedList.prototype.add = function (datum){
   //create a new doubly-linked node
   var dln = {
     datum: datum, // original datum
-    value: this._valueAccesor(datum),
+    value: this._valueAccessor(datum),
+    id: this._idAccessor(datum),
     prev: null,	// previous value-based node
     next: null		// next value-based node
   };
@@ -99,10 +102,20 @@ SortedDirectAccessDoublyLinkedList.prototype.add = function (datum){
   }
 
   //direct access to the node
-  this._idToNode[dln.datum.id] = dln;
+  this._idToNode[dln.id] = dln;
 
   //update size
   this.size++;
+
+  //for chaining purpose
+  return this;
+};
+
+SortedDirectAccessDoublyLinkedList.prototype.addMany = function (data) {
+
+  data.forEach( function (datum, item) {
+    this.add(datum);
+  }, this);
 
   //for chaining purpose
   return this;
@@ -146,9 +159,8 @@ SortedDirectAccessDoublyLinkedList.prototype.remove = function (datum) {
     }
   }
 
-
+  delete this._idToNode[dln.id]; //remove direct access to the node
   dln = null; // carbage collector
-  delete this._idToNode[datum.id]; //remove direct access to the node
 
   //update size
   this.size--;
