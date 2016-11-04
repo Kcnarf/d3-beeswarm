@@ -1,4 +1,4 @@
-import SortedDirectAccessDoublyLinkedList from './sortedDirectAccessDoublyLinkedList';
+import {default as SortedDirectAccessDoublyLinkedList} from './sortedDirectAccessDoublyLinkedList';
 
 export default function () {
   /////// Inputs ///////
