@@ -110,6 +110,7 @@ tape("SDADLL.add() should maintain sort", function(test) {
   test.end();
 });
 
+
 tape("SDADLL.addMany() should allow chaining", function(test) {
   var sdadll = new SDADLL();
   test.ok(sdadll.addMany([]) === sdadll);
@@ -130,6 +131,7 @@ tape("SDADLL.addMany() should add() each datum", function(test) {
   test.end();
 });
 
+
 tape("SDADLL.dln() should depends on idAccessor", function(test) {
   var sdadll0 = new SDADLL(),
       sdadll1 = new SDADLL().idAccessor(function(obj){ return "id_"+obj.id; }),
@@ -140,6 +142,7 @@ tape("SDADLL.dln() should depends on idAccessor", function(test) {
   test.ok(sdadll1.dln(datum0).datum === datum0);
   test.end();
 });
+
 
 tape("SDADLL.empty() should allow chaining", function(test) {
   var sdadll = new SDADLL();
@@ -171,5 +174,110 @@ tape("SDADLL.empty() should maintain idAccessor", function(test) {
   var sdadll = new SDADLL(),
       ia = sdadll.idAccessor();
   test.ok(sdadll.empty().idAccessor() === ia);
+  test.end();
+});
+
+
+tape("SDADLL.remove() should allow chaining", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: -1};
+  test.ok(sdadll.add(datum0).remove(datum0) === sdadll);
+  test.end();
+});
+
+tape("SDADLL.remove() should maintain size", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: 0},
+      datum1 = {id: 1, value: 1};
+  sdadll.addMany([datum0, datum1]);
+  sdadll.remove(datum0);
+  test.ok(sdadll.size === 1);
+  sdadll.remove(datum1);
+  test.ok(sdadll.size === 0);
+  test.end();
+});
+
+tape("SDADLL.add() should maintain closestTo0", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: 1},
+      datum1 = {id: 1, value: 2},
+      datum2 = {id: 2, value: -2},
+      datum3 = {id: 3, value: 0};
+  sdadll.addMany([datum0, datum1, datum2, datum3]);
+  sdadll.remove(datum3);
+  test.ok(sdadll.closestTo0().datum === datum0);
+  sdadll.remove(datum2);
+  test.ok(sdadll.closestTo0().datum === datum0);
+  sdadll.remove(datum1);
+  test.ok(sdadll.closestTo0().datum === datum0);
+  sdadll.remove(datum0);
+  test.ok(sdadll.closestTo0() === null);
+  test.end();
+});
+
+tape("SDADLL.add() should maintain min", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: 1},
+      datum1 = {id: 1, value: 2},
+      datum2 = {id: 2, value: -2},
+      datum3 = {id: 3, value: 0};
+  sdadll.addMany([datum0, datum1, datum2, datum3]);
+  sdadll.remove(datum3);
+  test.ok(sdadll._min.datum === datum2);
+  sdadll.remove(datum2);
+  test.ok(sdadll._min.datum === datum0);
+  sdadll.remove(datum1);
+  test.ok(sdadll._min.datum === datum0);
+  sdadll.remove(datum0);
+  test.ok(sdadll._min === null);
+  test.end();
+});
+
+tape("SDADLL.add() should maintain max", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: 1},
+      datum1 = {id: 1, value: 2},
+      datum2 = {id: 2, value: -2},
+      datum3 = {id: 3, value: 0};
+  sdadll.addMany([datum0, datum1, datum2, datum3]);
+  sdadll.remove(datum3);
+  test.ok(sdadll._max.datum === datum1);
+  sdadll.remove(datum2);
+  test.ok(sdadll._max.datum === datum1);
+  sdadll.remove(datum1);
+  test.ok(sdadll._max.datum === datum0);
+  sdadll.remove(datum0);
+  test.ok(sdadll._max === null);
+  test.end();
+});
+
+tape("SDADLL.remove() should maintain direct accesses", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: -1},
+      datum1 = {id: 1, value: -2},
+      datum2 = {id: 2, value: -3};
+  sdadll.addMany([datum0, datum1, datum2]);
+  sdadll.remove(datum2);
+  test.ok(sdadll.dln(datum0).datum === datum0 &&
+          sdadll.dln(datum1).datum === datum1);
+  sdadll.remove(datum1);
+  test.ok(sdadll.dln(datum0).datum === datum0);
+  test.end();
+});
+
+tape("SDADLL.remove() should maintain sort", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: 1},
+      datum1 = {id: 1, value: 2},
+      datum2 = {id: 2, value: -2},
+      datum3 = {id: 3, value: 0};
+  sdadll.addMany([datum0, datum1, datum2, datum3]);
+  sdadll.remove(datum3);
+  test.ok(sdadll.dln(datum0).prev === sdadll.dln(datum2) &&
+          sdadll.dln(datum2).next === sdadll.dln(datum0));
+  sdadll.remove(datum2);
+  test.ok(sdadll.dln(datum0).prev === null);
+  sdadll.remove(datum1);
+  test.ok(sdadll.dln(datum0).next === null);
   test.end();
 });

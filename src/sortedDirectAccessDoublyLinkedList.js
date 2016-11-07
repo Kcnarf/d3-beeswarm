@@ -122,11 +122,11 @@ SortedDirectAccessDoublyLinkedList.prototype.remove = function (datum) {
   if (this.size === 1) { //special case: last item to remove
     this._min = this._max = this._closestTo0 = null;
   } else {
-    if (dln===this._closestTo0) {
+    if (dln === this._closestTo0) {
       if (this._closestTo0.next === null) {
         //closestTo0 is also the max, consider merge code with below
         this._closestTo0 = dln.prev;
-      } else if (this.closestToZero.prev === null) {
+      } else if (this._closestTo0.prev === null) {
         //closestTo0 is also the min, consider merge code with below
         this._closestTo0 = dln.prev;
       } else {
