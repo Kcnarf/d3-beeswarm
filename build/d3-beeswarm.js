@@ -47,7 +47,7 @@
     return this._closestTo0;
   };
 
-  SortedDirectAccessDoublyLinkedList.prototype.clear = function () {
+  SortedDirectAccessDoublyLinkedList.prototype.empty = function () {
     this._min = null;
     this._max = null;
     this._closestTo0 = null;
@@ -253,7 +253,7 @@
         if (xBasedPossibleColliders.length===0) {
           bestYPosition = 0;
         } else {
-          yBasedColliderManager.clear();
+          yBasedColliderManager.empty();
           yBasedColliderManager.addMany(xBasedPossibleColliders);
           // try to place on the x-axis
           d.free = 0;

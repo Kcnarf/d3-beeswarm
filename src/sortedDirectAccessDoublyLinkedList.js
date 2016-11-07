@@ -41,7 +41,7 @@ SortedDirectAccessDoublyLinkedList.prototype.closestTo0 = function () {
   return this._closestTo0;
 };
 
-SortedDirectAccessDoublyLinkedList.prototype.clear = function () {
+SortedDirectAccessDoublyLinkedList.prototype.empty = function () {
   this._min = null;
   this._max = null;
   this._closestTo0 = null;

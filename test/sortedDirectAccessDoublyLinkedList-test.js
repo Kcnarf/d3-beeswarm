@@ -141,17 +141,17 @@ tape("SDADLL.dln() should depends on idAccessor", function(test) {
   test.end();
 });
 
-tape("SDADLL.clear() should allow chaining", function(test) {
+tape("SDADLL.empty() should allow chaining", function(test) {
   var sdadll = new SDADLL();
-  test.ok(sdadll.clear() === sdadll);
+  test.ok(sdadll.empty() === sdadll);
   test.end();
 });
 
-tape("SDADLL.clear() should empty doubly-linked nodes", function(test) {
+tape("SDADLL.empty() should empty doubly-linked nodes", function(test) {
   var sdadll = new SDADLL();
   sdadll.addMany([{id: 0, value: 0}, {id: 1, value: 1}]);
   test.ok(sdadll.size === 2);
-  sdadll.clear();
+  sdadll.empty();
   test.ok(sdadll.size === 0);
   test.ok(sdadll._min === null);
   test.ok(sdadll._max === null);
@@ -160,16 +160,16 @@ tape("SDADLL.clear() should empty doubly-linked nodes", function(test) {
   test.end();
 });
 
-tape("SDADLL.clear() should maintain valueAccessor", function(test) {
+tape("SDADLL.empty() should maintain valueAccessor", function(test) {
   var sdadll = new SDADLL(),
       va = sdadll.valueAccessor();
-  test.ok(sdadll.clear().valueAccessor() === va);
+  test.ok(sdadll.empty().valueAccessor() === va);
   test.end();
 });
 
-tape("SDADLL.clear() should maintain idAccessor", function(test) {
+tape("SDADLL.empty() should maintain idAccessor", function(test) {
   var sdadll = new SDADLL(),
       ia = sdadll.idAccessor();
-  test.ok(sdadll.clear().idAccessor() === ia);
+  test.ok(sdadll.empty().idAccessor() === ia);
   test.end();
 });
