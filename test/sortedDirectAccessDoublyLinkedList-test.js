@@ -2,6 +2,36 @@ var tape = require("tape"),
     SDADLL = require("../build/sortedDirectAccessDoublyLinkedList");
 
 
+
+tape("SDADLL.add() should allow chaining", function(test) {
+  var sdadll = new SDADLL(),
+      datum0 = {id: 0, value: -1};
+  test.ok(sdadll.add(datum0) === sdadll);
+  test.end();
+});
+
+tape("SDADLL.add() should build doubly-linked nodes depending on valueAccessor", function(test) {
+  var sdadll0 = new SDADLL(),
+      sdadll1 = new SDADLL().valueAccessor(function(obj){ return 10*obj.value; }),
+      datum0 = {id: 0, value: -1};
+  sdadll0.add(datum0);
+  test.ok(sdadll0.dln(datum0).value === -1);
+  sdadll1.add(datum0);
+  test.ok(sdadll1.dln(datum0).value === -10);
+  test.end();
+});
+
+tape("SDADLL.add() should build doubly-linked nodes depending on idAccessor", function(test) {
+  var sdadll0 = new SDADLL(),
+      sdadll1 = new SDADLL().idAccessor(function(obj){ return "id_"+obj.id; }),
+      datum0 = {id: 0, value: -1};
+  sdadll0.add(datum0);
+  test.ok(sdadll0.dln(datum0).id === 0);
+  sdadll1.add(datum0);
+  test.ok(sdadll1.dln(datum0).id === "id_0");
+  test.end();
+});
+
 tape("SDADLL.add() should maintain size", function(test) {
   var sdadll = new SDADLL(),
       datum0 = {id: 0, value: 0},
@@ -91,10 +121,9 @@ tape("SDADLL.add() should maintain sort", function(test) {
   test.end();
 });
 
-tape("SDADLL.add() should allow chaining", function(test) {
-  var sdadll = new SDADLL(),
-      datum0 = {id: 0, value: -1};
-  test.ok(sdadll.add(datum0) === sdadll);
+tape("SDADLL.addMany() should allow chaining", function(test) {
+  var sdadll = new SDADLL();
+  test.ok(sdadll.addMany([]) === sdadll);
   test.end();
 });
 
@@ -112,8 +141,35 @@ tape("SDADLL.addMany() should add() each datum", function(test) {
   test.end();
 });
 
-tape("SDADLL.addMany() should allow chaining", function(test) {
+tape("SDADLL.clear() should allow chaining", function(test) {
   var sdadll = new SDADLL();
-  test.ok(sdadll.addMany([]) === sdadll);
+  test.ok(sdadll.clear() === sdadll);
+  test.end();
+});
+
+tape("SDADLL.clear() should empty doubly-linked nodes", function(test) {
+  var sdadll = new SDADLL();
+  sdadll.addMany([{id: 0, value: 0}, {id: 1, value: 1}]);
+  test.ok(sdadll.size === 2);
+  sdadll.clear();
+  test.ok(sdadll.size === 0);
+  test.ok(sdadll._min === null);
+  test.ok(sdadll._max === null);
+  test.ok(sdadll._closestTo0 === null);
+  test.looseEqual(sdadll._idToNode, {});
+  test.end();
+});
+
+tape("SDADLL.clear() should maintain valueAccessor", function(test) {
+  var sdadll = new SDADLL(),
+      va = sdadll.valueAccessor();
+  test.ok(sdadll.clear().valueAccessor() === va);
+  test.end();
+});
+
+tape("SDADLL.clear() should maintain idAccessor", function(test) {
+  var sdadll = new SDADLL(),
+      ia = sdadll.idAccessor();
+  test.ok(sdadll.clear().idAccessor() === ia);
   test.end();
 });
