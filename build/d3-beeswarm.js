@@ -43,8 +43,21 @@
     return this;
   };
 
+  SortedDirectAccessDoublyLinkedList.prototype.min = function () {
+    return this._min;
+  };
+
+  SortedDirectAccessDoublyLinkedList.prototype.max = function () {
+    return this._max;
+  };
+
   SortedDirectAccessDoublyLinkedList.prototype.closestTo0 = function () {
     return this._closestTo0;
+  };
+
+  SortedDirectAccessDoublyLinkedList.prototype.dln = function (datum){
+    // dln = doubly-linked node
+    return this._idToNode[this._idAccessor(datum)];
   };
 
   SortedDirectAccessDoublyLinkedList.prototype.empty = function () {
@@ -56,11 +69,6 @@
 
     //for chaining purpose
     return this;
-  };
-
-  SortedDirectAccessDoublyLinkedList.prototype.dln = function (datum){
-    // dln = doubly-linked node
-    return this._idToNode[this._idAccessor(datum)];
   };
 
   SortedDirectAccessDoublyLinkedList.prototype.add = function (datum){

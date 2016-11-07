@@ -55,11 +55,11 @@ tape("SDADLL.add() should maintain min", function(test) {
       datum1 = {id: 1, value: 2},
       datum2 = {id: 2, value: -2};
   sdadll.add(datum0);
-  test.ok(sdadll._min.datum === datum0);
+  test.ok(sdadll.min().datum === datum0);
   sdadll.add(datum1);
-  test.ok(sdadll._min.datum === datum0);
+  test.ok(sdadll.min().datum === datum0);
   sdadll.add(datum2);
-  test.ok(sdadll._min.datum === datum2);
+  test.ok(sdadll.min().datum === datum2);
   test.end();
 });
 
@@ -69,11 +69,11 @@ tape("SDADLL.add() should maintain max", function(test) {
       datum1 = {id: 1, value: -2},
       datum2 = {id: 2, value: 2};
   sdadll.add(datum0);
-  test.ok(sdadll._max.datum === datum0);
+  test.ok(sdadll.max().datum === datum0);
   sdadll.add(datum1);
-  test.ok(sdadll._max.datum === datum0);
+  test.ok(sdadll.max().datum === datum0);
   sdadll.add(datum2);
-  test.ok(sdadll._max.datum === datum2);
+  test.ok(sdadll.max().datum === datum2);
   test.end();
 });
 
@@ -156,8 +156,8 @@ tape("SDADLL.empty() should empty doubly-linked nodes", function(test) {
   test.ok(sdadll.size === 2);
   sdadll.empty();
   test.ok(sdadll.size === 0);
-  test.ok(sdadll._min === null);
-  test.ok(sdadll._max === null);
+  test.ok(sdadll.min() === null);
+  test.ok(sdadll.max() === null);
   test.ok(sdadll._closestTo0 === null);
   test.looseEqual(sdadll._idToNode, {});
   test.end();
@@ -223,13 +223,13 @@ tape("SDADLL.add() should maintain min", function(test) {
       datum3 = {id: 3, value: 0};
   sdadll.addMany([datum0, datum1, datum2, datum3]);
   sdadll.remove(datum3);
-  test.ok(sdadll._min.datum === datum2);
+  test.ok(sdadll.min().datum === datum2);
   sdadll.remove(datum2);
-  test.ok(sdadll._min.datum === datum0);
+  test.ok(sdadll.min().datum === datum0);
   sdadll.remove(datum1);
-  test.ok(sdadll._min.datum === datum0);
+  test.ok(sdadll.min().datum === datum0);
   sdadll.remove(datum0);
-  test.ok(sdadll._min === null);
+  test.ok(sdadll.min() === null);
   test.end();
 });
 
@@ -241,13 +241,13 @@ tape("SDADLL.add() should maintain max", function(test) {
       datum3 = {id: 3, value: 0};
   sdadll.addMany([datum0, datum1, datum2, datum3]);
   sdadll.remove(datum3);
-  test.ok(sdadll._max.datum === datum1);
+  test.ok(sdadll.max().datum === datum1);
   sdadll.remove(datum2);
-  test.ok(sdadll._max.datum === datum1);
+  test.ok(sdadll.max().datum === datum1);
   sdadll.remove(datum1);
-  test.ok(sdadll._max.datum === datum0);
+  test.ok(sdadll.max().datum === datum0);
   sdadll.remove(datum0);
-  test.ok(sdadll._max === null);
+  test.ok(sdadll.max() === null);
   test.end();
 });
 
