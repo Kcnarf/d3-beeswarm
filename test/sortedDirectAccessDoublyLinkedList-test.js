@@ -21,17 +21,6 @@ tape("SDADLL.add() should build doubly-linked nodes depending on valueAccessor",
   test.end();
 });
 
-tape("SDADLL.add() should build doubly-linked nodes depending on idAccessor", function(test) {
-  var sdadll0 = new SDADLL(),
-      sdadll1 = new SDADLL().idAccessor(function(obj){ return "id_"+obj.id; }),
-      datum0 = {id: 0, value: -1};
-  sdadll0.add(datum0);
-  test.ok(sdadll0.dln(datum0).id === 0);
-  sdadll1.add(datum0);
-  test.ok(sdadll1.dln(datum0).id === "id_0");
-  test.end();
-});
-
 tape("SDADLL.add() should maintain size", function(test) {
   var sdadll = new SDADLL(),
       datum0 = {id: 0, value: 0},
@@ -138,6 +127,17 @@ tape("SDADLL.addMany() should add() each datum", function(test) {
   test.ok(sdadll.size === 3);
   sdadll.addMany(data2);
   test.ok(sdadll.size === 3);
+  test.end();
+});
+
+tape("SDADLL.dln() should depends on idAccessor", function(test) {
+  var sdadll0 = new SDADLL(),
+      sdadll1 = new SDADLL().idAccessor(function(obj){ return "id_"+obj.id; }),
+      datum0 = {id: 0, value: -1};
+  sdadll0.add(datum0);
+  test.ok(sdadll0.dln(datum0).datum === datum0);
+  sdadll1.add(datum0);
+  test.ok(sdadll1.dln(datum0).datum === datum0);
   test.end();
 });
 

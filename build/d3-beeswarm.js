@@ -4,17 +4,12 @@
   (factory((global.d3 = global.d3 || {})));
 }(this, function (exports) { 'use strict';
 
-  ///////////////////////
-  //////// Data /////////
-  ////// Strucutre //////
-  ///////////////////////
-
-  // each data MUST have a value to sort on, which default to the the 'value' attribute
-  // each data MUST have a uniq id for direct-access, which defaults to the 'id' attribute
+  // each data MUST have a uniq id for direct-access, which defaults to its 'id' attribute
+  // each data MUST have a value to sort on, which default to its 'value' attribute
 
   // data in SortedDirectAccessDoublyLinkedList are sorted by 'value', from min to max, in a doubly-linked list
-  // each node in the doubly-linked list is of the form {datum: , value: , id: , prev: , next: }
-  // 'datum' refers to the original datum; 'value' and 'id' are retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
+  // each node in the doubly-linked list is of the form {datum: , value: , prev: , next: }
+  // 'datum' refers to the original datum; 'value' is retrieved from data, 'prev'/'next' refer to previous/next value-based nodes
 
   function SortedDirectAccessDoublyLinkedList () {
     this._valueAccessor =          // accessor to the value to sort on
@@ -72,8 +67,7 @@
     //create a new doubly-linked node
     var dln = {
       datum: datum, // original datum
-      value: this._valueAccessor(datum),
-      id: this._idAccessor(datum),
+      value: this._valueAccessor(datum), // store datum's value, intensively used when sorting
       prev: null,	// previous value-based node
       next: null		// next value-based node
     };
@@ -108,7 +102,7 @@
     }
 
     //direct access to the node
-    this._idToNode[dln.id] = dln;
+    this._idToNode[this._idAccessor(datum)] = dln;
 
     //update size
     this.size++;
@@ -165,7 +159,7 @@
       }
     }
 
-    delete this._idToNode[dln.id]; //remove direct access to the node
+    delete this._idToNode[this._idAccessor(datum)]; //remove direct access to the node
     dln = null; // carbage collector
 
     //update size
