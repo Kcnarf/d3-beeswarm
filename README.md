@@ -15,8 +15,9 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 
 
 ## Examples
-* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) uses this __d3-beeswarm__ plugin.
+* [White House Salaries - Obama '16 VS Trump '17](https://bl.ocks.org/Kcnarf/4608704a70fc24e2c06ca0116830de47).
 * This [post](http://poly-graph.co/vocabulary.html) uses a beeswarm plot (but not this plugin).
+* This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) allows to play with the options of this __d3-beeswarm__ plugin.
 
 ## Installing
 If you use NPM, ```npm install d3-beeswarm```). Otherwise, load ```https://rawgit.com/Kcnarf/d3.beeswarm/master/build/d3-beeswarm.js``` to make it available in AMD, CommonJS, or vanilla environments. In vanilla, a d3 global is exported:
