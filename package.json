@@ -1,6 +1,6 @@
 {
   "name": "d3-beeswarm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "D3 plugin which computes a 'beeswarm' arrangement",
   "keywords": [
     "d3",
@@ -29,6 +29,6 @@
   "devDependencies": {
     "rollup": "0.27",
     "tape": "4",
-    "uglify-js": "2"
+    "uglify-js": "~>2.6.0"
   }
 }
