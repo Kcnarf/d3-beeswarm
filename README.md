@@ -20,7 +20,7 @@ This _beeswarm_ plugin uses a dedicated one pass algorithm. By default, this plu
 * This [block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8) allows to play with the options of this __d3-beeswarm__ plugin.
 
 ## Installing
-If you use NPM, ```npm install d3-beeswarm```. Otherwise, load ```https://rawgit.com/Kcnarf/d3.beeswarm/master/build/d3-beeswarm.js``` to make it available in AMD, CommonJS, or vanilla environments. In vanilla, a d3 global is exported:
+If you use NPM, ```npm install d3-beeswarm```. Otherwise, load ```https://rawgit.com/Kcnarf/d3-beeswarm/master/build/d3-beeswarm.js``` to make it available in AMD, CommonJS, or vanilla environments. In vanilla, a d3 global is exported:
 ```html
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://rawgit.com/Kcnarf/d3-beeswarm/master/build/d3-beeswarm.js"></script>
