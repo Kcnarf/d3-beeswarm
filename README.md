@@ -62,7 +62,7 @@ d3.selectAll('circle')
 In the last line, ```bee.datum``` refers to the original datum.
 
 ## Reference
-* R package: <a href=http://www.cbs.dtu.dk/~eklund/beeswarm/'>http://www.cbs.dtu.dk/~eklund/beeswarm/</a>
+* R package: [http://www.cbs.dtu.dk/~eklund/beeswarm](http://www.cbs.dtu.dk/~eklund/beeswarm/)
 
 ## API
 
@@ -121,5 +121,5 @@ Launches the arrangement computation. Return an array of ```{x: , y: , datum: }`
 
 ## How To
 
-* issue [option to arrange from minToMax, maxToMin, extremeToCenter, shuffled](https://github.com/Kcnarf/d3.beeswarm/issues/7) explains how to arrange in a particular order. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
-* issue [add a maximum size, and provide strategies if exceeded](https://github.com/Kcnarf/d3.beeswarm/issues/2) explains how to handle too large viz due to extreme accumulations. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
+* issue [option to arrange from minToMax, maxToMin, extremeToCenter, shuffled](https://github.com/Kcnarf/d3-beeswarm/issues/7) explains how to arrange in a particular order. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
+* issue [add a maximum size, and provide strategies if exceeded](https://github.com/Kcnarf/d3-beeswarm/issues/2) explains how to handle too large viz due to extreme accumulations. It can be tested in [this block](http://bl.ocks.org/Kcnarf/5c989173d0e0c74ab4b62161b33bb0a8).
